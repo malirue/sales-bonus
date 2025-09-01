@@ -7,6 +7,26 @@
 function calculateSimpleRevenue(purchase, _product) {
   // const { discount, sale_price, quantity } = purchase;
   // @TODO: Расчет выручки от операции
+  return (
+    purchase.sale_prise * purchase.quantity * (purchase.discount / 100) -
+    _product.purchase_price * purchase.quantity
+  );
+}
+
+/**
+ * Функция для рассчета выручки отдельного продавца(моя)
+ * @param {} seller
+ * @returns {number} revenu только рассчет выручки, остальное будет в другой ф-ии
+ */
+function calculateSellerRevenue(data, seller) {
+  let purchase_records = data.purchase_records;
+
+  for (let i = 0; i < purchase_records.length; i++) {
+    if (purchase_records[i].seller_id === seller) {
+    }
+  }
+  console.log();
+  return 0;
 }
 
 /**
@@ -38,11 +58,6 @@ function analyzeSalesData(data, options) {
   // @TODO: Индексация продавцов и товаров для быстрого доступа
 
   // @TODO: Расчет выручки и прибыли для каждого продавца
-  // let pizdatyMassiv = [];
-  // for (let i = 0; i < 10; i++) {
-  //   pizdatyMassiv.push({ ise: i });
-  // }
-  // console.log(pizdatyMassiv);
 
   /**
    * [
@@ -56,7 +71,7 @@ function analyzeSalesData(data, options) {
   let sellersArr = [];
 
   for (let i = 0; i < sellers.length; i++) {
-    let sellerRevenue = calculateSellerRevenue(sellers[i]);
+    let sellerRevenue = calculateSellerRevenue(data, sellers[i]);
     sellersArr.push({ seller_id: sellers[i].id, revenue: sellerRevenue });
   }
   console.log(sellersArr);
@@ -67,15 +82,4 @@ function analyzeSalesData(data, options) {
   // @TODO: Назначение премий на основе ранжирования
 
   // @TODO: Подготовка итоговой коллекции с нужными полями
-}
-/**
- * Функция для рассчета выручки отдельного продавца
- * @param {} seller
- */
-function calculateSellerRevenue(seller) {
-  // let fromPercentToDecimal = discount / 100;
-  // let fullPrice = sale_prise * qanity;
-  // let priceWithoutDiscount = fullPrice * fromPercentToDecimal;
-  console.log(seller);
-  return 0;
 }
