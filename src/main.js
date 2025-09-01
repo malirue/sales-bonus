@@ -5,7 +5,8 @@
  * @returns {number}
  */
 function calculateSimpleRevenue(purchase, _product) {
-   // @TODO: Расчет выручки от операции
+  // const { discount, sale_price, quantity } = purchase;
+  // @TODO: Расчет выручки от операции
 }
 
 /**
@@ -16,7 +17,8 @@ function calculateSimpleRevenue(purchase, _product) {
  * @returns {number}
  */
 function calculateBonusByProfit(index, total, seller) {
-    // @TODO: Расчет бонуса от позиции в рейтинге
+  // const { profit } = seller;
+  // @TODO: Расчет бонуса от позиции в рейтинге
 }
 
 /**
@@ -26,19 +28,54 @@ function calculateBonusByProfit(index, total, seller) {
  * @returns {{revenue, top_products, bonus, name, sales_count, profit, seller_id}[]}
  */
 function analyzeSalesData(data, options) {
-    // @TODO: Проверка входных данных
+  let sellers = data.sellers;
+  // @TODO: Проверка входных данных
 
-    // @TODO: Проверка наличия опций
+  // @TODO: Проверка наличия опций
 
-    // @TODO: Подготовка промежуточных данных для сбора статистики
+  // @TODO: Подготовка промежуточных данных для сбора статистики
 
-    // @TODO: Индексация продавцов и товаров для быстрого доступа
+  // @TODO: Индексация продавцов и товаров для быстрого доступа
 
-    // @TODO: Расчет выручки и прибыли для каждого продавца
+  // @TODO: Расчет выручки и прибыли для каждого продавца
+  // let pizdatyMassiv = [];
+  // for (let i = 0; i < 10; i++) {
+  //   pizdatyMassiv.push({ ise: i });
+  // }
+  // console.log(pizdatyMassiv);
 
-    // @TODO: Сортировка продавцов по прибыли
+  /**
+   * [
+   *  { seller_id: 1,
+   *    revenue: 0;
+   *  }
+   * ]
+   */
+  let govno = [];
 
-    // @TODO: Назначение премий на основе ранжирования
+  let sellersArr = [];
 
-    // @TODO: Подготовка итоговой коллекции с нужными полями
+  for (let i = 0; i < sellers.length; i++) {
+    let sellerRevenue = calculateSellerRevenue(sellers[i]);
+    sellersArr.push({ seller_id: sellers[i].id, revenue: sellerRevenue });
+  }
+  console.log(sellersArr);
+
+  // @TODO: Сортировка продавцов по прибыли
+  console.log(govno);
+
+  // @TODO: Назначение премий на основе ранжирования
+
+  // @TODO: Подготовка итоговой коллекции с нужными полями
+}
+/**
+ * Функция для рассчета выручки отдельного продавца
+ * @param {} seller
+ */
+function calculateSellerRevenue(seller) {
+  // let fromPercentToDecimal = discount / 100;
+  // let fullPrice = sale_prise * qanity;
+  // let priceWithoutDiscount = fullPrice * fromPercentToDecimal;
+  console.log(seller);
+  return 0;
 }
