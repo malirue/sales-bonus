@@ -4,12 +4,12 @@
  * @param _product карточка товара
  * @returns {number}
  */
-function calculateSimpleRevenue(purchase, _product) {
+function calculateSimpleRevenue(purchase, product) {
   // const { discount, sale_price, quantity } = purchase;
   // @TODO: Расчет выручки от операции
   return (
-    purchase.sale_prise * purchase.quantity * (purchase.discount / 100) -
-    _product.purchase_price * purchase.quantity
+    purchase.sale_price * (1 - purchase.discount / 100) * purchase.quantity -
+    product.purchase_price * purchase.quantity
   );
 }
 
@@ -20,13 +20,31 @@ function calculateSimpleRevenue(purchase, _product) {
  */
 function calculateSellerRevenue(data, seller) {
   let purchase_records = data.purchase_records;
+  let products = data.products;
+  let totalRevenue = 0; // Инициализируем общую выручку
 
   for (let i = 0; i < purchase_records.length; i++) {
-    if (purchase_records[i].seller_id === seller) {
+    if (purchase_records[i].seller_id === seller.id) {
+      let items = purchase_records[i].items;
+      for (let j = 0; j < items.length; j++) {
+        let purchase = {
+          discount: items[j].discount,
+          sale_price: items[j].sale_price,
+          quantity: items[j].quantity,
+        };
+        let product = products.find((product) => product.sku === items[j].sku);
+        if (product) {
+          // Проверяем, что продукт найден
+          totalRevenue += calculateSimpleRevenue(purchase, product); // Добавляем выручку от текущей покупки к общей выручке
+        } else {
+          console.warn(`Product with SKU ${items[j].sku} not found.`);
+        }
+      }
+
+      // calculateSimpleRevenue(purchase, _product);
     }
   }
-  console.log();
-  return 0;
+  return totalRevenue;
 }
 
 /**
