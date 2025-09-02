@@ -1,10 +1,7 @@
 /**
- * Функция для расчета выручки
- * @param purchase запись о покупке
- * @param _product карточка товара
- * @returns {number}
+ * Функция для расчета прибыли от продаж
  */
-function calculateSimpleRevenue(purchase, product) {
+function calculateSimpleProfit(purchase, product) {
   // const { discount, sale_price, quantity } = purchase;
   // @TODO: Расчет выручки от операции
   return (
@@ -14,9 +11,49 @@ function calculateSimpleRevenue(purchase, product) {
 }
 
 /**
- * Функция для рассчета выручки отдельного продавца(моя)
+ * Функция для расчета прибыли от продаж продавца
+ */
+function calculateSellerProfit(data, seller) {
+  let purchase_records = data.purchase_records;
+  let products = data.products;
+  let totalRevenue = 0; // Инициализируем общую выручку
+
+  for (let i = 0; i < purchase_records.length; i++) {
+    if (purchase_records[i].seller_id === seller.id) {
+      let items = purchase_records[i].items;
+      for (let j = 0; j < items.length; j++) {
+        let purchase = items[j];
+        let product = products.find((product) => product.sku === purchase.sku);
+        if (product) {
+          // Проверяем, что продукт найден
+          totalRevenue += calculateSimpleProfit(purchase, product); // Добавляем выручку от текущей покупки к общей выручке
+        } else {
+          console.warn(`Product with SKU ${items[j].sku} not found.`); //Убрать потом
+        }
+      }
+    }
+  }
+  return totalRevenue;
+}
+
+/**
+ * Функция для расчета общей выручки
+ * @param purchase запись о покупке
+ * @param _product карточка товара
+ * @returns {number}
+ */
+function calculateSimpleRevenue(purchase, product) {
+  // const { discount, sale_price, quantity } = purchase;
+  // @TODO: Расчет выручки от операции
+  return (
+    purchase.sale_price * (1 - purchase.discount / 100) * purchase.quantity
+  );
+}
+
+/**
+ * Функция для рассчета общей выручки отдельного продавца(моя)
  * @param {} seller
- * @returns {number} revenu только рассчет выручки, остальное будет в другой ф-ии
+ * @returns {number} revenu только рассчет общей выручки, остальное будет в другой ф-ии
  */
 function calculateSellerRevenue(data, seller) {
   let purchase_records = data.purchase_records;
@@ -27,21 +64,15 @@ function calculateSellerRevenue(data, seller) {
     if (purchase_records[i].seller_id === seller.id) {
       let items = purchase_records[i].items;
       for (let j = 0; j < items.length; j++) {
-        let purchase = {
-          discount: items[j].discount,
-          sale_price: items[j].sale_price,
-          quantity: items[j].quantity,
-        };
-        let product = products.find((product) => product.sku === items[j].sku);
+        let purchase = items[j];
+        let product = products.find((product) => product.sku === purchase.sku);
         if (product) {
           // Проверяем, что продукт найден
           totalRevenue += calculateSimpleRevenue(purchase, product); // Добавляем выручку от текущей покупки к общей выручке
         } else {
-          console.warn(`Product with SKU ${items[j].sku} not found.`);
+          console.warn(`Product with SKU ${items[j].sku} not found.`); //Убрать потом
         }
       }
-
-      // calculateSimpleRevenue(purchase, _product);
     }
   }
   return totalRevenue;
@@ -77,25 +108,23 @@ function analyzeSalesData(data, options) {
 
   // @TODO: Расчет выручки и прибыли для каждого продавца
 
-  /**
-   * [
-   *  { seller_id: 1,
-   *    revenue: 0;
-   *  }
-   * ]
-   */
-  let govno = [];
-
   let sellersArr = [];
 
   for (let i = 0; i < sellers.length; i++) {
     let sellerRevenue = calculateSellerRevenue(data, sellers[i]);
-    sellersArr.push({ seller_id: sellers[i].id, revenue: sellerRevenue });
+    let sellerProfit = calculateSellerProfit(data, sellers[i]);
+    sellersArr.push({
+      id: sellers[i].id,
+      name: `${sellers[i].first_name} ${sellers[i].last_name}`,
+      revenue: sellerRevenue,
+      profit: sellerProfit,
+      sales_count: 0,
+      products_sold: {},
+    });
   }
   console.log(sellersArr);
 
   // @TODO: Сортировка продавцов по прибыли
-  console.log(govno);
 
   // @TODO: Назначение премий на основе ранжирования
 
