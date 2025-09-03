@@ -2,8 +2,6 @@
  * Функция для расчета прибыли от продаж
  */
 function calculateSimpleProfit(purchase, product) {
-  // const { discount, sale_price, quantity } = purchase;
-  // @TODO: Расчет выручки от операции
   return (
     purchase.sale_price * (1 - purchase.discount / 100) * purchase.quantity -
     product.purchase_price * purchase.quantity
@@ -16,7 +14,7 @@ function calculateSimpleProfit(purchase, product) {
 function calculateSellerProfit(data, seller) {
   let purchase_records = data.purchase_records;
   let products = data.products;
-  let totalRevenue = 0; // Инициализируем общую выручку
+  let totalProfit = 0; // Инициализируем общую выручку
 
   for (let i = 0; i < purchase_records.length; i++) {
     if (purchase_records[i].seller_id === seller.id) {
@@ -26,14 +24,14 @@ function calculateSellerProfit(data, seller) {
         let product = products.find((product) => product.sku === purchase.sku);
         if (product) {
           // Проверяем, что продукт найден
-          totalRevenue += calculateSimpleProfit(purchase, product); // Добавляем выручку от текущей покупки к общей выручке
+          totalProfit += calculateSimpleProfit(purchase, product); // Добавляем выручку от текущей покупки к общей выручке
         } else {
           console.warn(`Product with SKU ${items[j].sku} not found.`); //Убрать потом
         }
       }
     }
   }
-  return totalRevenue;
+  return totalProfit;
 }
 
 /**
@@ -78,6 +76,23 @@ function calculateSellerRevenue(data, seller) {
   return totalRevenue;
 }
 
+//
+/**
+ * Функция для рассчета количества продаж конкретного продавца
+ *
+ */
+function calculatesellerSalesCount(data, seller) {
+  let totalSalesCount = 0;
+  let purchase_records = data.purchase_records;
+
+  for (let i = 0; i < purchase_records.length; i++) {
+    if (purchase_records[i].seller_id === seller.id) {
+      totalSalesCount += 1;
+    }
+  }
+  return totalSalesCount;
+}
+
 /**
  * Функция для расчета бонусов
  * @param index порядковый номер в отсортированном массиве
@@ -113,12 +128,13 @@ function analyzeSalesData(data, options) {
   for (let i = 0; i < sellers.length; i++) {
     let sellerRevenue = calculateSellerRevenue(data, sellers[i]);
     let sellerProfit = calculateSellerProfit(data, sellers[i]);
+    let sellerSalesCount = calculatesellerSalesCount(data, sellers[i]);
     sellersArr.push({
       id: sellers[i].id,
       name: `${sellers[i].first_name} ${sellers[i].last_name}`,
       revenue: sellerRevenue,
       profit: sellerProfit,
-      sales_count: 0,
+      sales_count: sellerSalesCount,
       products_sold: {},
     });
   }
