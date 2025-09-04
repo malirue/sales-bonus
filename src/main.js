@@ -101,8 +101,21 @@ function calculatesellerSalesCount(data, seller) {
  * @returns {number}
  */
 function calculateBonusByProfit(index, total, seller) {
-  // const { profit } = seller;
   // @TODO: Расчет бонуса от позиции в рейтинге
+
+  if (index === 0) {
+    // Первый элемент - максимальная прибыль
+    return seller.profit * 0.15;
+  } else if (index >= 1 && index <= 2) {
+    // Второй и третий элементы
+    return seller.profit * 0.1;
+  } else if (index < total - 1) {
+    // Все остальные, кроме последнего
+    return seller.profit * 0.05;
+  } else {
+    // Последний элемент
+    return 0;
+  }
 }
 
 /**
@@ -143,8 +156,15 @@ function analyzeSalesData(data, options) {
   // @TODO: Сортировка продавцов по прибыли
   sellersArr.sort((a, b) => b.profit - a.profit);
   console.log(sellersArr);
-  
+
   // @TODO: Назначение премий на основе ранжирования
+  sellersArr.forEach((seller, index) => {
+    let figVam = calculateBonusByProfit(index, sellersArr.length, seller);
+    console.log(figVam);
+    seller.bonus = figVam;
+  });
+
+  console.log(sellersArr);
 
   // @TODO: Подготовка итоговой коллекции с нужными полями
 }
