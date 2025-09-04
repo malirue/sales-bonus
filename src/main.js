@@ -141,7 +141,9 @@ function analyzeSalesData(data, options) {
   console.log(sellersArr);
 
   // @TODO: Сортировка продавцов по прибыли
-
+  sellersArr.sort((a, b) => b.profit - a.profit);
+  console.log(sellersArr);
+  
   // @TODO: Назначение премий на основе ранжирования
 
   // @TODO: Подготовка итоговой коллекции с нужными полями
