@@ -35,6 +35,29 @@ function calculateSellerProfit(data, seller) {
 }
 
 /**
+ * Функция для расчета Топ 10 товаров конкретного продавца
+ *
+ */
+function calculateTopTenItems(data, seller) {
+  let purchase_records = data.purchase_records;
+  let totalScu = "";
+  let totalQuantity = 0;
+
+  purchase_records.forEach((record, index, purchase_records) => {
+    if (record.seller_id === seller) {
+      let items = purchase_records[index].items;
+      items.forEach((item) => {
+        if (items) {
+          totalQuantity += item.quantity;
+        }
+      });
+    }
+  });
+  console.log(totalScu, totalQuantity);
+  return { scu: totalScu, quantity: totalQuantity };
+}
+
+/**
  * Функция для расчета общей выручки
  * @param purchase запись о покупке
  * @param _product карточка товара
@@ -148,7 +171,7 @@ function analyzeSalesData(data, options) {
       revenue: sellerRevenue,
       profit: sellerProfit,
       sales_count: sellerSalesCount,
-      products_sold: {},
+      top_products: {},
     });
   }
   console.log(sellersArr);
@@ -160,11 +183,15 @@ function analyzeSalesData(data, options) {
   // @TODO: Назначение премий на основе ранжирования
   sellersArr.forEach((seller, index) => {
     let figVam = calculateBonusByProfit(index, sellersArr.length, seller);
-    console.log(figVam);
     seller.bonus = figVam;
   });
 
-  console.log(sellersArr);
+  // @TODO: Топ 10 товаров продавца
+  sellers.forEach((seller, index, sellers) => {
+    let nihuya = calculateTopTenItems(data, seller.id);
+    console.log(nihuya);
+  });
 
   // @TODO: Подготовка итоговой коллекции с нужными полями
+  console.table(sellersArr);
 }
