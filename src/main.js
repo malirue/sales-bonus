@@ -40,21 +40,22 @@ function calculateSellerProfit(data, seller) {
  */
 function calculateTopTenItems(data, seller) {
   let purchase_records = data.purchase_records;
-  let totalScu = "";
-  let totalQuantity = 0;
+  let total = {};
+  let quantity = 0;
 
   purchase_records.forEach((record, index, purchase_records) => {
     if (record.seller_id === seller) {
       let items = purchase_records[index].items;
-      items.forEach((item) => {
-        if (items) {
-          totalQuantity += item.quantity;
-        }
+      items.forEach((item, index, items) => {
+        total = {
+          sku: items[index].sku,
+          quantity: (quantity += items[index].quantity),
+        };
+        console.log(total);
+        return total;
       });
     }
   });
-  console.log(totalScu, totalQuantity);
-  return { scu: totalScu, quantity: totalQuantity };
 }
 
 /**
