@@ -36,26 +36,45 @@ function calculateSellerProfit(data, seller) {
 
 /**
  * Функция для расчета Топ 10 товаров конкретного продавца
- *
+ * @param data общие данные
+ * @param sellerId id продавца из чека
  */
-function calculateTopTenItems(data, seller) {
+function calculateTopTenItems(data, sellerId) {
   let purchase_records = data.purchase_records;
-  let total = {};
-  let quantity = 0;
+  let sku = {};
 
-  purchase_records.forEach((record, index, purchase_records) => {
-    if (record.seller_id === seller) {
-      let items = purchase_records[index].items;
-      items.forEach((item, index, items) => {
-        total = {
-          sku: items[index].sku,
-          quantity: (quantity += items[index].quantity),
-        };
-        console.log(total);
-        return total;
-      });
+  let promRes = [];
+
+  purchase_records.forEach((record) => {
+    if (record.seller_id !== sellerId) {
+      return;
     }
+
+    let items = record.items;
+    items.forEach((item) => {
+      promRes.push({ sku: item.sku, quantity: item.quantity });
+    });
   });
+
+  let mapped = new Map();
+
+  promRes.forEach((el) => {
+    if (!mapped.has(el.sku)) {
+      mapped.set(el.sku, el.quantity);
+    } else {
+      mapped.set(el.sku, mapped.get(el.sku) + el.quantity);
+    }
+    console.log(mapped);
+  });
+
+  let res = [];
+
+  mapped.forEach((quantity, sku) => {
+    res.push({ sku, quantity });
+    console.log(res);
+  });
+
+  return res;
 }
 
 /**
@@ -188,7 +207,8 @@ function analyzeSalesData(data, options) {
   });
 
   // @TODO: Топ 10 товаров продавца
-  sellers.forEach((seller, index, sellers) => {
+  sellersArr.forEach((seller, index, sellers) => {
+    seller.top_products = calculateTopTenItems(data, seller.id);
     let nihuya = calculateTopTenItems(data, seller.id);
     console.log(nihuya);
   });
