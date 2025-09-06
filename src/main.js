@@ -41,8 +41,6 @@ function calculateSellerProfit(data, seller) {
  */
 function calculateTopTenItems(data, sellerId) {
   let purchase_records = data.purchase_records;
-  let sku = {};
-
   let promRes = [];
 
   purchase_records.forEach((record) => {
@@ -51,6 +49,7 @@ function calculateTopTenItems(data, sellerId) {
     }
 
     let items = record.items;
+
     items.forEach((item) => {
       promRes.push({ sku: item.sku, quantity: item.quantity });
     });
@@ -74,7 +73,9 @@ function calculateTopTenItems(data, sellerId) {
     console.log(res);
   });
 
-  return res;
+  res.sort((a, b) => b.quantity - a.quantity);
+
+  return res.slice(0, 10);
 }
 
 /**
