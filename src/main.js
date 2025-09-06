@@ -41,7 +41,7 @@ function calculateSellerProfit(data, seller) {
  */
 function calculateTopTenItems(data, sellerId) {
   let purchase_records = data.purchase_records;
-  let promRes = [];
+  let mapped = new Map();
 
   purchase_records.forEach((record) => {
     if (record.seller_id !== sellerId) {
@@ -51,19 +51,12 @@ function calculateTopTenItems(data, sellerId) {
     let items = record.items;
 
     items.forEach((item) => {
-      promRes.push({ sku: item.sku, quantity: item.quantity });
+      if (!mapped.has(item.sku)) {
+        mapped.set(item.sku, item.quantity);
+      } else {
+        mapped.set(item.sku, mapped.get(item.sku) + item.quantity);
+      }
     });
-  });
-
-  let mapped = new Map();
-
-  promRes.forEach((el) => {
-    if (!mapped.has(el.sku)) {
-      mapped.set(el.sku, el.quantity);
-    } else {
-      mapped.set(el.sku, mapped.get(el.sku) + el.quantity);
-    }
-    console.log(mapped);
   });
 
   let res = [];
