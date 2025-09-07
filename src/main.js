@@ -29,7 +29,7 @@ function calculateSellerProfit(data, seller) {
       }
     }
   }
-  return Math.round(totalProfit * 10) / 100;
+  return Math.round(totalProfit * 100) / 100;
 }
 
 /**
@@ -105,7 +105,7 @@ function calculateSellerRevenue(data, seller) {
       }
     }
   }
-  return Math.round(totalRevenue * 10) / 100;
+  return Math.round(totalRevenue * 100) / 100;
 }
 
 //
