@@ -14,7 +14,7 @@ function calculateSimpleProfit(purchase, product) {
 function calculateSellerProfit(data, seller) {
   let purchase_records = data.purchase_records;
   let products = data.products;
-  let totalProfit = 0; // Инициализируем общую выручку
+  let totalProfit = 0;
 
   for (let i = 0; i < purchase_records.length; i++) {
     if (purchase_records[i].seller_id === seller.id) {
@@ -63,7 +63,6 @@ function calculateTopTenItems(data, sellerId) {
 
   mapped.forEach((quantity, sku) => {
     res.push({ sku, quantity });
-    console.log(res);
   });
 
   res.sort((a, b) => b.quantity - a.quantity);
@@ -93,7 +92,7 @@ function calculateSimpleRevenue(purchase, product) {
 function calculateSellerRevenue(data, seller) {
   let purchase_records = data.purchase_records;
   let products = data.products;
-  let totalRevenue = 0; // Инициализируем общую выручку
+  let totalRevenue = 0;
 
   for (let i = 0; i < purchase_records.length; i++) {
     if (purchase_records[i].seller_id === seller.id) {
@@ -188,11 +187,9 @@ function analyzeSalesData(data, options) {
       top_products: {},
     });
   }
-  console.log(sellersArr);
 
   // @TODO: Сортировка продавцов по прибыли
   sellersArr.sort((a, b) => b.profit - a.profit);
-  console.log(sellersArr);
 
   // @TODO: Назначение премий на основе ранжирования
   sellersArr.forEach((seller, index) => {
@@ -204,7 +201,6 @@ function analyzeSalesData(data, options) {
   sellersArr.forEach((seller, index, sellers) => {
     seller.top_products = calculateTopTenItems(data, seller.id);
     let nihuya = calculateTopTenItems(data, seller.id);
-    console.log(nihuya);
   });
 
   // @TODO: Подготовка итоговой коллекции с нужными полями
