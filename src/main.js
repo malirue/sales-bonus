@@ -29,7 +29,7 @@ function calculateSellerProfit(data, seller) {
       }
     }
   }
-  return Math.round(totalProfit * 100) / 100;
+  return totalProfit;
 }
 
 /**
@@ -105,7 +105,7 @@ function calculateSellerRevenue(data, seller) {
       }
     }
   }
-  return Math.round(totalRevenue * 100) / 100;
+  return totalRevenue;
 }
 
 //
@@ -137,13 +137,13 @@ function calculateBonusByProfit(index, total, seller) {
 
   if (index === 0) {
     // Первый элемент - максимальная прибыль
-    return Math.round(seller.profit * 0.15 * 100) / 100;
+    return seller.profit * 0.15;
   } else if (index >= 1 && index <= 2) {
     // Второй и третий элементы
-    return Math.round(seller.profit * 0.1 * 100) / 100;
+    return seller.profit * 0.1;
   } else if (index < total - 1) {
     // Все остальные, кроме последнего
-    return Math.round(seller.profit * 0.05);
+    return seller.profit * 0.05;
   } else {
     // Последний элемент
     return 0;
@@ -189,7 +189,7 @@ function analyzeSalesData(data, options) {
     let sellerProfit = calculateSellerProfit(data, sellers[i]);
     let sellerSalesCount = calculatesellerSalesCount(data, sellers[i]);
     sellersArr.push({
-      id: sellers[i].id,
+      seller_id: sellers[i].id,
       name: `${sellers[i].first_name} ${sellers[i].last_name}`,
       revenue: sellerRevenue,
       profit: sellerProfit,
