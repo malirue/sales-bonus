@@ -172,7 +172,7 @@ function analyzeSalesData(data, options) {
   }
 
   // @TODO: Проверка наличия опций
-
+   const { calculateRevenue, calculateBonus } = options;
   // @TODO: Подготовка промежуточных данных для сбора статистики
 
   // @TODO: Индексация продавцов и товаров для быстрого доступа
@@ -207,9 +207,8 @@ function analyzeSalesData(data, options) {
   // @TODO: Топ 10 товаров продавца
   sellersArr.forEach((seller, index, sellers) => {
     seller.top_products = calculateTopTenItems(data, seller.id);
-    let nihuya = calculateTopTenItems(data, seller.id);
   });
 
   // @TODO: Подготовка итоговой коллекции с нужными полями
-  console.table(sellersArr);
+  return sellersArr;
 }
