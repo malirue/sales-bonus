@@ -137,13 +137,13 @@ function calculateBonusByProfit(index, total, seller) {
 
   if (index === 0) {
     // Первый элемент - максимальная прибыль
-    return seller.profit * 0.15;
+    return Math.round(seller.profit * 0.15 * 100) / 100;
   } else if (index >= 1 && index <= 2) {
     // Второй и третий элементы
-    return seller.profit * 0.1;
+    return Math.round(seller.profit * 0.1 * 100) / 100;
   } else if (index < total - 1) {
     // Все остальные, кроме последнего
-    return seller.profit * 0.05;
+    return Math.round(seller.profit * 0.05);
   } else {
     // Последний элемент
     return 0;
