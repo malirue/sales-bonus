@@ -209,7 +209,7 @@ function analyzeSalesData(data, options) {
 
   // @TODO: Топ 10 товаров продавца
   sellersArr.forEach((seller, index, sellers) => {
-    seller.top_products = calculateTopTenItems(data, seller.id);
+    seller.top_products = calculateTopTenItems(data, seller.seller_id);
   });
 
   // @TODO: Подготовка итоговой коллекции с нужными полями
