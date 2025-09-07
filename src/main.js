@@ -163,6 +163,14 @@ function calculateBonusByProfit(index, total, seller) {
 function analyzeSalesData(data, options) {
   let sellers = data.sellers;
   // @TODO: Проверка входных данных
+  if (
+    !data ||
+    !Array.isArray(data.sellers) ||
+    !Array.isArray(data.products) ||
+    !Array.isArray(data.products)
+  ) {
+    throw new Error("Некорректные входные данные");
+  }
 
   // @TODO: Проверка наличия опций
 
