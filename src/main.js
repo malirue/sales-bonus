@@ -172,7 +172,10 @@ function analyzeSalesData(data, options) {
   }
 
   // @TODO: Проверка наличия опций
-   const { calculateRevenue, calculateBonus } = options;
+  const { calculateRevenue, calculateBonus } = options;
+  if (!calculateRevenue || !calculateBonus) {
+    throw new Error("Чего-то не хватает");
+  }
   // @TODO: Подготовка промежуточных данных для сбора статистики
 
   // @TODO: Индексация продавцов и товаров для быстрого доступа
