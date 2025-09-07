@@ -25,13 +25,11 @@ function calculateSellerProfit(data, seller) {
         if (product) {
           // Проверяем, что продукт найден
           totalProfit += calculateSimpleProfit(purchase, product); // Добавляем выручку от текущей покупки к общей выручке
-        } else {
-          console.warn(`Product with SKU ${items[j].sku} not found.`); //Убрать потом
         }
       }
     }
   }
-  return totalProfit;
+  return Math.round(totalProfit * 10) / 100;
 }
 
 /**
@@ -103,13 +101,11 @@ function calculateSellerRevenue(data, seller) {
         if (product) {
           // Проверяем, что продукт найден
           totalRevenue += calculateSimpleRevenue(purchase, product); // Добавляем выручку от текущей покупки к общей выручке
-        } else {
-          console.warn(`Product with SKU ${items[j].sku} not found.`); //Убрать потом
         }
       }
     }
   }
-  return totalRevenue;
+  return Math.round(totalRevenue * 10) / 100;
 }
 
 //
