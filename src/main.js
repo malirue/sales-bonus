@@ -3,8 +3,8 @@
  */
 function calculateSimpleProfit(purchase, product) {
   return (
-    purchase.sale_price * (1 - purchase.discount / 100) * purchase.quantity -
-    product.purchase_price * purchase.quantity
+    Math.round((purchase.sale_price * (1 - purchase.discount / 100) * purchase.quantity -
+    product.purchase_price * purchase.quantity) * 100) / 100
   );
 }
 
@@ -29,7 +29,7 @@ function calculateSellerProfit(data, seller) {
       }
     }
   }
-  return totalProfit;
+  return Math.round(totalProfit * 100) / 100;
 }
 
 /**
@@ -77,7 +77,7 @@ function calculateTopTenItems(data, sellerId) {
 function calculateSimpleRevenue(purchase, product) {
   // @TODO: Расчет выручки от операции
   return (
-    purchase.sale_price * purchase.quantity * (1 - purchase.discount / 100)
+   Math.round(purchase.sale_price * purchase.quantity * (1 - purchase.discount / 100) * 100) / 100 
   );
 }
 
@@ -104,9 +104,6 @@ function calculateSellerRevenue(data, seller) {
       }
     }
   }
-  console.log(totalRevenue);
-  console.log(Math.round(totalRevenue * 100) / 100);
-  console.log(+totalRevenue.toFixed(2));
   return Math.round(totalRevenue * 100) / 100;
 }
 
@@ -139,13 +136,13 @@ function calculateBonusByProfit(index, total, seller) {
 
   if (index === 0) {
     // Первый элемент - максимальная прибыль
-    return seller.profit * 0.15;
+    return Math.round((seller.profit * 0.15) * 100) / 100;
   } else if (index >= 1 && index <= 2) {
     // Второй и третий элементы
-    return seller.profit * 0.1;
+    return Math.round((seller.profit * 0.1) * 100) / 100;
   } else if (index < total - 1) {
     // Все остальные, кроме последнего
-    return seller.profit * 0.05;
+    return Math.round((seller.profit * 0.05) * 100) / 100;
   } else {
     // Последний элемент
     return 0;
