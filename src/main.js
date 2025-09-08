@@ -75,10 +75,9 @@ function calculateTopTenItems(data, sellerId) {
  * @returns {number}
  */
 function calculateSimpleRevenue(purchase, product) {
-  // const { discount, sale_price, quantity } = purchase;
   // @TODO: Расчет выручки от операции
   return (
-    purchase.sale_price * (1 - purchase.discount / 100) * purchase.quantity
+    purchase.sale_price * purchase.quantity * (1 - purchase.discount / 100)
   );
 }
 
@@ -105,7 +104,10 @@ function calculateSellerRevenue(data, seller) {
       }
     }
   }
-  return totalRevenue;
+  console.log(totalRevenue);
+  console.log(Math.round(totalRevenue * 100) / 100);
+  console.log(+totalRevenue.toFixed(2));
+  return Math.round(totalRevenue * 100) / 100;
 }
 
 //
